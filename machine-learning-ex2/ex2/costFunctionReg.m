@@ -22,10 +22,8 @@ thetaLength = size(theta);
 
 J =  (1/m)*(-y'*log(sigmoid(X*theta))-(1-y)'*log(1-sigmoid(X*theta))) + (lambda/(2*m))*(theta(2:thetaLength)'*theta(2:thetaLength));
 
-grad = (1/m)*(X'(2:thetaLength,:)*(sigmoid(X*theta)-y)) + (lambda/m)*(theta(2:thetaLength));
-
 grad(1) = (1/m)*(X'(1,:)*(sigmoid(X*theta)-y));
-
+grad(2:thetaLength) = (1/m)*(X'(2:thetaLength,:)*(sigmoid(X*theta)-y)) + (lambda/m)*(theta(2:thetaLength));
 
 % =============================================================
 
