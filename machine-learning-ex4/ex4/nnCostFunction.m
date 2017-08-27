@@ -67,22 +67,20 @@ Theta2_grad = zeros(size(Theta2));
 theta1Col = size(Theta1)(2);
 theta2Col = size(Theta2)(2);
 
-ym = []
+ym = [];
 
-for k=1:size(y)
+for k=1:size(y,1)
     yk = zeros(1,num_labels);
     yk(y(k)) = 1;
     ym = [ym;yk];
-end; 
+end;
 
-a2 = X*Theta1';
+a2 = sigmoid(X*Theta1');
 a2 = [ones(size(a2, 1), 1) a2];
+            
 
-cost = (1/m)*sum((-log(sigmoid(a2*Theta2'))*y'-log(1-sigmoid(a2*Theta2'))*(1-y)')(:));
-
-reg = (lambda/(2*m))*(sum((Theta1(:,[2:theta1Col]).^2)(:))+sum((Theta2(:,[2:theta2Col]).^2)(:)));
-
-J =  cost + reg;
+J =  -(1/m)*(sum((log(sigmoid(a2*Theta2')).*ym)(:))+sum((log(1-sigmoid(a2*Theta2')).*(1-ym))(:))) + ...
+      (lambda/(2*m))*(sum((Theta1(:,[2:theta1Col]).^2)(:))+sum((Theta2(:,[2:theta2Col]).^2)(:)));
 
 
 
