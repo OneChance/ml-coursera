@@ -7,6 +7,8 @@ function [C, sigma] = dataset3Params(X, y, Xval, yval)
 %   sigma based on a cross-validation set.
 %
 
+steps = [0.01,0.03,0.1,0.3,1,3,10,30];
+
 % You need to return the following variables correctly.
 C = 1;
 sigma = 0.3;
@@ -23,10 +25,27 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+stepLenth = length(steps);
 
+min_error = 1;
 
+for i=1:stepLenth
+  for j=1:stepLenth
+    C_test = steps(i);
+    sigma_test = steps(j);
+    model = svmTrain(X, y, C_test, @(x1, x2) gaussianKernel(x1, x2, sigma_test));
+    predictions = svmPredict(model, Xval);
+    error = mean(double(predictions ~= yval));
+    if error < min_error
+      C = C_test;
+      sigma = sigma_test;
+      min_error = error;
+    end
+  end
+end
 
-
+C
+sigma
 
 
 % =========================================================================
